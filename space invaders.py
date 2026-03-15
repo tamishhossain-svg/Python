@@ -1,8 +1,6 @@
 import pygame
 import random
 
-from pygame.examples.video import backgrounds
-
 # initialize pygame
 pygame.init()
 
@@ -11,8 +9,6 @@ screen = pygame.display.set_mode((800,600))
 
 # Background
 background = pygame.image.load('space.png')
-
-
 
 # Title and icon
 pygame.display.set_caption("Space Invaders")
@@ -33,11 +29,25 @@ enemyY = random.randint(50,150)
 enemyX_change = 0.3
 enemyY_change = 40
 
+#bullet, ready state - cant see the bullet on the screen
+bulletimg = pygame.image.load('Bullet png.png')
+bulletX = 0
+bulletY = 480
+bulletX_change = 0
+bulletY_change = 40
+bullet_state = "ready"
+
+
 def player(x, y):
     screen.blit(playerimg, (x, y))
 
 def enemy (x, y):
     screen.blit(enemyimg, (x, y))
+
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bulletimg, (x + 16, y + 10))
 
 # Game loop
 running = True
@@ -59,6 +69,10 @@ while running:
                 playerX_change = -0.25
             if event.key == pygame.K_RIGHT:
                 playerX_change = 0.25
+            if event.key == pygame.K_SPACE:
+                if bullet_state == "ready":
+                    bulletX = playerX
+                    fire_bullet(bulletX, bulletY)
 
         # key released
         if event.type == pygame.KEYUP:
@@ -76,13 +90,11 @@ while running:
     if enemyX <= 0:
         enemyX_change = 0.2
         enemyY += enemyY_change
-
     elif enemyX >= 736:
         enemyX_change = -0.2
         enemyY += enemyY_change
 
 
- ###
     # draw player
     player(playerX, playerY)
     enemy(enemyX,enemyY)
