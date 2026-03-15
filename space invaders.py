@@ -82,7 +82,7 @@ while running:
         enemyY += enemyY_change
 
 
-
+ ###
     # draw player
     player(playerX, playerY)
     enemy(enemyX,enemyY)
