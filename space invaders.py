@@ -89,6 +89,15 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
     distance = math.sqrt((enemyX-bulletX)**2 + (enemyY-bulletY)**2)
     return distance < 27
 
+    # Bullet movement
+    if bulletY <= 0:
+        bulletY = 480
+        bullet_state = "ready"
+
+    if bullet_state == "fire":
+        fire_bullet(bulletX, bulletY)
+        bulletY -= bulletY_change
+
 
         # key pressed(speed control)
         if event.type == pygame.KEYDOWN:
@@ -100,6 +109,15 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
                 if bullet_state == "ready":
                     bulletX = playerX
                     fire_bullet(bulletX, bulletY)
+
+        
+        # Collision check
+        if isCollision(enemyX[i], enemyY[i], bulletX, bulletY):
+            bulletY = 480
+            bullet_state = "ready"
+            score_value += 1
+            enemyX[i] = random.randint(0,736)
+            enemyY[i] = random.randint(50,150)
 
         # key released
         if event.type == pygame.KEYUP:
