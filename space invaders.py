@@ -110,8 +110,7 @@ while running:
     playerX = max(0, min(playerX, 800 - playerimg.get_width()))
 
     #enemy movement
-    enemyX += enemyX_change
-
+    
     if enemyX <= 0:
         enemyX_change = 0.2
         enemyY += enemyY_change
@@ -130,8 +129,6 @@ while running:
 
         # game over check
         if enemyY[i] > 440:
-            for j in range(num_of_enemies):
-                enemyY[j] = 2000
             game_over = True
             break
 
