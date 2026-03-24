@@ -110,18 +110,16 @@ while running:
     playerX += playerX_change
     playerX = max(0, min(playerX, 800 - playerimg.get_width()))
 
-    # enforce boundaries
-    playerX = max(0, min(playerX, 800 - playerimg.get_width()))
-
+ 
     # enemy move
     for i in range(num_of_enemies):
 
         # game over check
-       if enemyY[i] > 440:
-           game_over = True
-           for j in range(num_of_enemies):
-               enemyY[j] = 2000
-           break
+        if enemyY[i] > 440:
+            game_over = True
+            for j in range(num_of_enemies):
+                enemyY[j] = 2000
+            break
 
         enemyX[i] += enemyX_change[i]
 
@@ -139,7 +137,8 @@ while running:
             enemyX[i] = random.randint(0, 736)
             enemyY[i] = random.randint(50, 150)
 
-            enemy(enemyX[i], enemyY[i])
+# ALWAYS draw enemy
+enemy(enemyX[i], enemyY[i])
 
     # bullet move
     if bulletY <= 0:
