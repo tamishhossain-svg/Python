@@ -95,11 +95,11 @@ while running:
                 playerX_change = -0.25
             if event.key == pygame.K_RIGHT:
                 playerX_change = 0.25
-            if event.key == pygame.K_SPACE:
-            if bullet_state == "ready":
-               bulletX = playerX
-               bulletY = playerY
-               fire_bullet(bulletX, bulletY)
+           if event.key == pygame.K_SPACE:
+               if bullet_state == "ready":
+                   bulletX = playerX
+                   bulletY = playerY
+                   fire_bullet(bulletX, bulletY)
 
         # key released
         if event.type == pygame.KEYUP:
@@ -116,18 +116,18 @@ while running:
 
         # game over check
        if enemyY[i] > 440:
-         game_over = True
-      for j in range(num_of_enemies):
-        enemyY[j] = 2000
-      break
+           game_over = True
+           for j in range(num_of_enemies):
+               enemyY[j] = 2000
+           break
 
         enemyX[i] += enemyX_change[i]
 
         if enemyX[i] <= 0:
-            enemyX_change[i] = 0.2
+            enemyX_change[i] = 0.5
             enemyY[i] += enemyY_change[i]
         elif enemyX[i] >= 736:
-            enemyX_change[i] = -0.2
+            enemyX_change[i] = -0.5
             enemyY[i] += enemyY_change[i]
 
         # collision
@@ -137,7 +137,7 @@ while running:
             enemyX[i] = random.randint(0, 736)
             enemyY[i] = random.randint(50, 150)
 
-      enemy(enemyX[i], enemyY[i])
+            enemy(enemyX[i], enemyY[i])
 
     # bullet move
     if bulletY <= 0:
