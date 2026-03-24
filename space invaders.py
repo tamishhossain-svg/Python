@@ -38,7 +38,7 @@ enemyY_change = []
 for i in range(num_of_enemies):
     enemyX.append(random.randint(0, 736))
     enemyY.append(random.randint(50, 150))
-    enemyX_change.append(0.2)
+    enemyX_change.append(0.5)
     enemyY_change.append(40)
 
 #bullet
@@ -48,7 +48,7 @@ bulletimg = pygame.image.load('Bullet png.png')
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 1
+bulletY_change = 2
 bullet_state = "ready"
 
 # font
@@ -62,7 +62,7 @@ def player(x, y):
     screen.blit(playerimg, (x, y))
 
 def enemy(x, y):
-    enemy(enemyX[i], enemyY[i])
+    screen.blit(enemyimg, (x, y))
 
 def fire_bullet(x, y):
     global bullet_state
@@ -96,9 +96,10 @@ while running:
             if event.key == pygame.K_RIGHT:
                 playerX_change = 0.25
             if event.key == pygame.K_SPACE:
-                if bullet_state == "ready":
-                    bulletX = playerX
-                    fire_bullet(bulletX, bulletY)
+            if bullet_state == "ready":
+               bulletX = playerX
+               bulletY = playerY
+               fire_bullet(bulletX, bulletY)
 
         # key released
         if event.type == pygame.KEYUP:
@@ -114,9 +115,11 @@ while running:
     for i in range(num_of_enemies):
 
         # game over check
-        if enemyY[i] > 440:
-            game_over = True
-            break
+       if enemyY[i] > 440:
+         game_over = True
+      for j in range(num_of_enemies):
+        enemyY[j] = 2000
+      break
 
         enemyX[i] += enemyX_change[i]
 
@@ -134,7 +137,7 @@ while running:
             enemyX[i] = random.randint(0, 736)
             enemyY[i] = random.randint(50, 150)
 
-        enemy(enemyX[i], enemyY[i], i)
+      enemy(enemyX[i], enemyY[i])
 
     # bullet move
     if bulletY <= 0:
