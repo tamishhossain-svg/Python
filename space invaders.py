@@ -77,6 +77,7 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
 # Game loop
 running = True
 game_over = False
+
 while running:
 
       # clear screen
@@ -95,11 +96,11 @@ while running:
                 playerX_change = -0.25
             if event.key == pygame.K_RIGHT:
                 playerX_change = 0.25
-           if event.key == pygame.K_SPACE:
-               if bullet_state == "ready":
-                   bulletX = playerX
-                   bulletY = playerY
-                   fire_bullet(bulletX, bulletY)
+            if event.key == pygame.K_SPACE:
+                if bullet_state == "ready":
+                    bulletX = playerX
+                    bulletY = playerY
+                    fire_bullet(bulletX, bulletY)
 
         # key released
         if event.type == pygame.KEYUP:
@@ -107,6 +108,7 @@ while running:
                 playerX_change = 0
     # player movement
     playerX += playerX_change
+    playerX = max(0, min(playerX, 800 - playerimg.get_width()))
 
     # enforce boundaries
     playerX = max(0, min(playerX, 800 - playerimg.get_width()))
