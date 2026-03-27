@@ -161,8 +161,7 @@ while running:
 
         enemy(enemyX[i], enemyY[i])
 
-        # Draw enemy
-        enemy(enemyX[i], enemyY[i])
+       
 
 
     # Bullet movement
