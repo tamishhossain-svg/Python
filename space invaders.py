@@ -191,8 +191,7 @@ while running:
             rapid_fire = False
 
 
-    # Draw player
-    player(playerX, playerY)
+
 
     # Game over text
     if game_over:
