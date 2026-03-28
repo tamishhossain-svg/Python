@@ -73,11 +73,13 @@ score = 0
 score_font = pygame.font.Font(None, 40)
 
 # Game Over Font
+score_font = pygame.font.Font(None, 40)
 over_font = pygame.font.Font(None, 64)
+menu_font = pygame.font.Font(None, 80)
 
 # Functions
 def show_score():
-    text = score_font.render("Score: " + str(score), True, (255, 255, 255))
+    text = score_font.render(f"Score: {score}  Level: {level}", True, (255, 255, 255))
     screen.blit(text, (10, 10))
 
 def show_game_over():
@@ -107,28 +109,63 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
 
 # Game loop
 running = True
+
 game_over = False
 
 while running:
-
     screen.blit(background, (0, 0))
 
-    for event in pygame.event.get():
-
+   for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        # Key pressed
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                playerX_change = -5
-            if event.key == pygame.K_RIGHT:
-                playerX_change = 5
-            if event.key == pygame.K_SPACE:
-                if rapid_fire or bullet_state == "ready":
-                    bulletX = playerX
-                    bulletY = playerY
-                    fire_bullet(bulletX, bulletY)
+            if state == "menu":
+                if event.key == pygame.K_SPACE:  # Start Game
+                    state = "playing"
+                if event.key == pygame.K_q:  # Quit Game
+                    running = False
+            
+            elif state == "level_suggestion":
+                if event.key == pygame.K_RETURN: # Press Enter to continue
+                    score = 0 # Reset score for each level
+                    create_enemies()
+                    state = "playing"
+
+            elif state == "playing":
+                if event.key == pygame.K_LEFT:
+                    playerX_change = -5
+                if event.key == pygame.K_RIGHT:
+                    playerX_change = -playerX_change if False else 5 # Just setting to 5
+                    playerX_change = 5
+                if event.key == pygame.K_SPACE:
+                    if rapid_fire or bullet_state == "ready":
+                        bulletX = playerX
+                        bulletY = playerY
+                        fire_bullet(bulletX, bulletY)
+                if event.key == pygame.K_ESCAPE:
+                    state = "paused"
+
+            elif state == "paused":
+                if event.key == pygame.K_r:
+                    state = "playing"
+                if event.key == pygame.K_q:
+                    running = False
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_change = 0
+
+
+       #Main Menu
+       if state == "menu":
+            title = menu_font.render("SPACE INVADERS", True, (0, 255, 255))
+        prompt = score_font.render("Press SPACE to Play", True, (255, 255, 255))
+        quit_prompt = score_font.render("Press Q to Quit", True, (255, 255, 255))
+        screen.blit(title, (150, 200))
+        screen.blit(prompt, (270, 320))
+        screen.blit(quit_prompt, (270, 360))
+
 
         # Key released
         if event.type == pygame.KEYUP:
@@ -161,15 +198,25 @@ while running:
         if isCollision(enemyX[i], enemyY[i], bulletX, bulletY):
             bulletY = 480
             bullet_state = "ready"
-            score += 1   
+            score += 10
+
+            #Check for level Progression
+            if level == 1 and score >= 100:
+                    level = 2
+                    state = "level_suggestion"
+                elif level == 2 and score >= 150:
+                    level = 3
+                    state = "level_suggestion"
+                elif level == 3 and score >= 300:
+                    state = "victory"
 
             if random.randint(0, 4) == 0:
                 powerupX = enemyX[i]
                 powerupY = enemyY[i]
                 powerup_active = True
 
-            enemyX[i] = random.randint(0, 736)
-            enemyY[i] = random.randint(50, 150)
+                enemyX[i] = random.randint(0, 736)
+                enemyY[i] = random.randint(50, 150)
 
         enemy(enemyX[i], enemyY[i])
 
@@ -202,10 +249,28 @@ while running:
 
     #  SHOW SCORE
     show_score()
-
-    # Game over
+# Game over
     if game_over:
         show_game_over()
 
+#POUSED
+
+elif state == "paused":
+        pause_text = over_font.render("PAUSED", True, (255, 255, 255))
+        resume_text = score_font.render("Press R to Resume", True, (255, 255, 255))
+        quit_text = score_font.render("Press Q to Quit", True, (255, 255, 255))
+        screen.blit(pause_text, (300, 250))
+        screen.blit(resume_text, (250, 320))
+        screen.blit(quit_text, (250, 360))
+
+#VICTORY
+elif state == "victory":
+        msg = menu_font.render("VICTORY!", True, (255, 215, 0))
+        score_msg = score_font.render(f"Final Score Level 3: {score}", True, (255, 255, 255))
+        screen.blit(msg, (250, 220))
+        screen.blit(score_msg, (270, 310))
+
+
     pygame.display.update()
     clock.tick(FPS)
+pygame.quit()
