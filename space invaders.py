@@ -37,7 +37,7 @@ enemyX = []
 enemyY = []
 enemyX_change = []
 enemyY_change = []
-def create_enimies():
+def create_enemies():
     enemyX.clear()
     enemyY.clear()
     enemyX_change.clear()
