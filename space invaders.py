@@ -150,7 +150,7 @@ while running:
             enemyX_change[i] = -2
             enemyY[i] += enemyY_change[i]
 
-        # 💥 Collision → add score
+        # Collision 
         if isCollision(enemyX[i], enemyY[i], bulletX, bulletY):
             bulletY = 480
             bullet_state = "ready"
