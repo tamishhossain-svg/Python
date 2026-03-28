@@ -1,6 +1,6 @@
 import pygame
 import random
-
+import sys
 # initialize pygame
 pygame.init()
 
@@ -37,12 +37,19 @@ enemyX = []
 enemyY = []
 enemyX_change = []
 enemyY_change = []
+def create_enimies():
+    enemyX.clear()
+    enemyY.clear()
+    enemyX_change.clear()
+    enemyY_change.clear()
+    
+    for i in range(num_of_enemies):
+        enemyX.append(random.randint(0, 736))
+        enemyY.append(random.randint(50, 150))
+        enemyX_change.append(2)
+        enemyY_change.append(40)
 
-for i in range(num_of_enemies):
-    enemyX.append(random.randint(0, 736))
-    enemyY.append(random.randint(50, 150))
-    enemyX_change.append(2)
-    enemyY_change.append(40)
+create_enemies()
 
 # Bullet
 bulletimg = pygame.image.load('Bullet png.png')
